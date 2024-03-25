@@ -227,20 +227,19 @@ function switchV(){
 	speakFlag = (volume_on.style.display == 'block');
 	localStorage['speakFlag'] = speakFlag;
 }
-// 将rand在触摸屏可以自由移动位置
+// rand在移动端自由移动位置
 rand.addEventListener('touchstart', function(e){
 	var disX = e.touches[0].clientX - rand.offsetLeft;
 	var disY = e.touches[0].clientY - rand.offsetTop;
 	var left = rand.style.left;
 	var top = rand.style.top;
-	var funtem = function(e){
+	var handler = function(e){
 		rand.style.left = e.touches[0].clientX - disX + 'px';
 		rand.style.top = e.touches[0].clientY - disY + 'px';
 	}
-	document.addEventListener('touchmove', funtem);
+	document.addEventListener('touchmove', handler);
 	document.addEventListener('touchend', function(e){
-		console.log('touch up');
-		document.removeEventListener('touchmove', funtem)
+		document.removeEventListener('touchmove', handler)
 		document.removeEventListener('touchend', arguments.callee)
 		if(left == rand.style.left && top == rand.style.top){
 			randWd();
@@ -248,7 +247,8 @@ rand.addEventListener('touchstart', function(e){
 	})
 	e.preventDefault();
 	return false;
-})
+}, { passive: false })
+// rand在PC端自由移动位置
 rand.onmousedown = function(e){
 	var disX = e.clientX - rand.offsetLeft;
 	var disY = e.clientY - rand.offsetTop;
@@ -259,7 +259,6 @@ rand.onmousedown = function(e){
 		rand.style.top = e.clientY - disY + 'px';
 	}
 	document.onmouseup = function(){
-		console.log('mouse up');
 		document.onmousemove = null;
 		document.onmouseup = null;
 		if(left == rand.style.left && top == rand.style.top){
