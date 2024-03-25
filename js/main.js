@@ -2,6 +2,7 @@
 var timer,wd="",guess="~";
 var speakFlag;
 const speaker=new window.SpeechSynthesisUtterance();
+var rand = document.getElementById('rand');
 speaker.rate="0.8";
 speaker.lang="en";
 
@@ -226,8 +227,49 @@ function switchV(){
 	speakFlag = (volume_on.style.display == 'block');
 	localStorage['speakFlag'] = speakFlag;
 }
+// 将rand在触摸屏可以自由移动位置
+rand.addEventListener('touchstart', function(e){
+	var disX = e.touches[0].clientX - rand.offsetLeft;
+	var disY = e.touches[0].clientY - rand.offsetTop;
+	var left = rand.style.left;
+	var top = rand.style.top;
+	var funtem = function(e){
+		rand.style.left = e.touches[0].clientX - disX + 'px';
+		rand.style.top = e.touches[0].clientY - disY + 'px';
+	}
+	document.addEventListener('touchmove', funtem);
+	document.addEventListener('touchend', function(e){
+		console.log('touch up');
+		document.removeEventListener('touchmove', funtem)
+		document.removeEventListener('touchend', arguments.callee)
+		if(left == rand.style.left && top == rand.style.top){
+			randWd();
+		}
+	})
+	e.preventDefault();
+	return false;
+})
+rand.onmousedown = function(e){
+	var disX = e.clientX - rand.offsetLeft;
+	var disY = e.clientY - rand.offsetTop;
+	var left = rand.style.left;
+	var top = rand.style.top;
+	document.onmousemove = function(e){
+		rand.style.left = e.clientX - disX + 'px';
+		rand.style.top = e.clientY - disY + 'px';
+	}
+	document.onmouseup = function(){
+		console.log('mouse up');
+		document.onmousemove = null;
+		document.onmouseup = null;
+		if(left == rand.style.left && top == rand.style.top){
+			randWd();
+		}
+	}
+	return false;
+}
 speakFlag = (localStorage['speakFlag'] == 'true');
 volume_on.style.display = speakFlag? 'block':'none';
 volume_off.style.display= speakFlag? 'none':'block';
-
+document.querySelector("#searchDiv > input[type=text]").focus();
 console.log("\n\n\n\n\n        萌是深藏不漏的✿◡‿◡\n\n\n\n\n\n");

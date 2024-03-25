@@ -33,24 +33,18 @@ button.jump {
 	font-size: 110%;
 	color: var(--text_color1);
 	width: 100%;
-	/* 	height:41px; */
-	/* 	animation: exp 1s; */
+	/* animation: exp .2s; */
 }
 #Dm {
 	animation: exp .2s;
 }
 @keyframes exp {
 	0% {
-		width: 97%;
-		height: 41px;
+		width: 96%;
 		color: var(--background_color);
 		border-bottom-color: var(--background_color);
 	}
-	25% {
-		/* 		color:#a5e6b3; */
-	}
 	100% {
-		height: 41px;
 		width: 100%;
 		color: var(--text_color1);
 		border-bottom-color: var(--text_color3);
@@ -81,6 +75,7 @@ a:hover {
 	top: 0;
 	left: 0;
 	right: 0;
+	z-index: 90;
 }
 .card {
 	background: var(--card_background);
@@ -162,6 +157,10 @@ span.jpExplain, div#wdExplain {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
+	height: 40px;
+	width: 40px;
+	border-radius: 100%;
+	z-index: 99;
 }
 #rand button{
 	border: none;
@@ -171,6 +170,7 @@ span.jpExplain, div#wdExplain {
 	box-shadow: var(--card_shadow);
 	background: var(--card_background);
 	color: white;
+	display: flex;
 }
 #rand button:hover{
 	filter: brightness(0.92);
@@ -178,11 +178,7 @@ span.jpExplain, div#wdExplain {
 	transition: 0.2s;
 }
 #rand svg{
-	/* 居中 */
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+	margin: auto;
 }
 .footer{
 	margin-bottom: 30px;
@@ -192,12 +188,10 @@ span.jpExplain, div#wdExplain {
 	color: var(--text_color3)!important;
 	text-decoration: none;
 	display: inline-flex;
-	justify-content: center;
 	align-items: center;
+	margin-left: 16px;
 }
 .footicon{
 	height: 16px;
-}
-.footname{
-	margin: 0 15px 0 5px;
+	padding-right: 5px;
 }
