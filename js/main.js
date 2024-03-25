@@ -1,8 +1,10 @@
 // ■■的事情发生了 o‿≖✧
 var timer,wd="",guess="~";
+var speakFlag;
 const speaker=new window.SpeechSynthesisUtterance();
-speaker.rate="0.75";
+speaker.rate="0.8";
 speaker.lang="en";
+
 function search(){
 	var elem=document.querySelector('#searchDiv input[name="word"]');
 	wd=elem.value;
@@ -15,9 +17,7 @@ function search(){
 		scrollTo(0,0);
 	}
 	else if(dic[wd]){
-		wdName.innerHTML=wd;
-		wdExplain.innerHTML=dic[wd];
-		research();
+		wdJump(wd);
 	}
 	else{
 		wdName.innerHTML=wd;
@@ -42,21 +42,22 @@ function research(){
 	list=[];n=0;
 	for(var key in dic){//包含关系搜索
 		if(key.search(wd)!=-1 && wd!=key){
-			if(n == 0){
-				list.push(
-					'<button class="jump jpTitle" id="D'+(n++)+'">'+
-						"Ⅰ.包含关系"+
-					"</button>"
-					);
-			}
+			// if(n == 0){
+			// 	list.push(
+			// 		'<button class="jump jpTitle cardcontent" id="D'+(n++)+'">'+
+			// 			"Ⅰ.包含关系"+
+			// 		"</button>"
+			// 	);
+			// }
 			list.push(
 				'<button class="jump" onclick="wdJump(\''+key+'\');" id="D'+(n++)+'">'+
 					key +
 					'<span class="jpExplain">'+
+						'<span class="wdFreq">'+calcLog(freqdic[key])+'</span>'+
 						dic[key] +
 					'</span>'+
 				"</button>"
-				);
+			);
 		}
 	}
 
@@ -76,8 +77,8 @@ function research(){
 			if(key.search(beginning)!=-1 && wd!=key){
 				if(n==n0){
 					list.push(
-						'<button class="jump jpTitle" id="D'+(n++)+'">'+
-							"Ⅱ.相同前缀("+beginning+")"+
+						'<button class="jump jpTitle cardcontent" id="D'+(n++)+'">'+
+							"Ⅱ.前缀<span>"+beginning +"</span>"+
 						"</button>"
 						);
 				}
@@ -85,6 +86,7 @@ function research(){
 					'<button class="jump" onclick="wdJump(\''+key+'\');" id="D'+(n++)+'">'+
 						key +
 						'<span class="jpExplain">'+
+							'<span class="wdFreq">'+calcLog(freqdic[key])+'</span>'+
 							dic[key] +
 						'</span>'+
 					"</button>"
@@ -99,18 +101,21 @@ function research(){
 			if("aeiou".includes(wd[i])){
 				alphaN++;
 			}
-			endding = wd[i]+endding;
-			if(alphaN==2){
+			endding = wd[i] + endding;
+			if(alphaN == 2){
+				if(wd[i-1])endding = wd[i-1]+endding;
+				if(endding == 'tion$' || endding == 'tive$' || endding == 'sion$'){
+					if(wd[i-2])endding = wd[i-2]+endding;
+				}
 				break;
 			}
 		}
-		// alert(endding);
 		for(var key in dic){
 			if(key.search(endding)!=-1 && wd!=key){
 				if(n==n1){
 					list.push(
-						'<button class="jump jpTitle" id="D'+(n++)+'">'+
-							"Ⅲ.相同后缀("+endding+")"+
+						'<button class="jump jpTitle cardcontent" id="D'+(n++)+'">'+
+							"Ⅲ.后缀<span>"+endding+"</span>"+
 						"</button>"
 					);
 				}
@@ -118,6 +123,7 @@ function research(){
 					'<button class="jump" onclick="wdJump(\''+key+'\');" id="D'+(n++)+'">'+
 						key +
 						'<span class="jpExplain">'+
+							'<span class="wdFreq">'+calcLog(freqdic[key])+'</span>'+
 							dic[key] +
 						'</span>'+
 					"</button>"
@@ -171,9 +177,18 @@ function wdJump(twd){// 联想记忆法，实用又高效(..•˘_˘•..)
 	rexcard.style.display = "none";
 	footer.style.display = 'none'
 	wdName.innerHTML = wd;
-	wdExplain.innerHTML = dic[wd];
+	wdExplain.innerHTML = '<span id="wdFreq" class="wdFreq"></span>' + dic[wd];
+	wdFreq.innerHTML = calcLog(freqdic[wd]);
+	if(speakFlag){
+		speaker.text=wd;
+		window.speechSynthesis.speak(speaker);
+	}
 	scrollTo(0,0);
 	research();
+}
+function calcLog(n){
+	if(n==0) return 0;
+	return (Math.log(n)/Math.log(86015)*9).toFixed(0);
 }
 function speak(){// 你想听单词，那我就■■■■■■(*•̀ㅂ•́)و
 	speaker.text = wdName.innerHTML;
@@ -204,4 +219,15 @@ function randWd(){
 	var jumpWd = Object.keys(dic)[jumpId];
 	wdJump(jumpWd);
 }
+function switchV(){
+	var tem = volume_on.style.display;
+	volume_on.style.display = volume_off.style.display;
+	volume_off.style.display = tem;
+	speakFlag = (volume_on.style.display == 'block');
+	localStorage['speakFlag'] = speakFlag;
+}
+speakFlag = (localStorage['speakFlag'] == 'true');
+volume_on.style.display = speakFlag? 'block':'none';
+volume_off.style.display= speakFlag? 'none':'block';
+
 console.log("\n\n\n\n\n        萌是深藏不漏的✿◡‿◡\n\n\n\n\n\n");

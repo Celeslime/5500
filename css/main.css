@@ -74,6 +74,7 @@ a:hover {
 }
 #result {
 	margin-top: 54px;
+	margin-bottom: 30px;
 }
 #searchDiv{
 	position: fixed;
@@ -90,17 +91,21 @@ a:hover {
 	padding: 8px;
 }
 .cardtitle {
-	color: #fff;
-	background: none;
-	text-align: left;
-	width: 100%;
-	border: none;
+	display: flex;
+	justify-content:space-between;
 	border-bottom: solid 1px #f1f1f1;
-	font-size: 200%;
+	padding: 10px;
+	overflow: hidden;
+}
+.cardtitle > * {
+	color: #fff;
+	border: none;
+	background: none;
+	display: inline-flex;
+    font-size: 200%;
 	font-family: "等线";
 	font-weight: bold;
-	margin: 0;
-	padding: 16px;
+	padding: 0;
 }
 .cardcontent {
 	line-height: 20px;
@@ -108,17 +113,20 @@ a:hover {
 	font-family: "等线";
 	margin: 0;
 	padding: 8px;
+	display: inline-flex;
+	align-items: center;
 }
 .cardcontent ul{
 	list-style: inside circle;
 	padding-left: 0;
 }
-.cardcontent span{
+.cardcontent span, span.wdFreq {
 	background-color: #0001;
 	padding: 1px 5px;
 	border-radius: 5px;
 	margin: 3px;
 	font-size: 90%;
+	font-family: '等线';
 }
 #resultUl {
 	padding-top: 8px;
@@ -127,7 +135,7 @@ a:hover {
 	color: #fff;
 	text-decoration: none;
 }
-span.jpExplain {
+span.jpExplain, div#wdExplain {
 	float: right;
 }
 .jump.jpTitle {
