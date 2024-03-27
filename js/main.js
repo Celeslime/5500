@@ -1,4 +1,4 @@
-// ■■的事情发生了 o‿≖✧
+// 奇妙的事情发生了 o‿≖✧
 var timer,wd="",guess="~";
 var speakFlag;
 const speaker=new window.SpeechSynthesisUtterance();
@@ -22,10 +22,24 @@ function search(){
 	}
 	else{
 		wdName.innerHTML=wd;
-		if(wd=="lyn"||wd=="sth"){
-			wdExplain.innerHTML="有话好好说!!!";
-			speaker.text="Hey guys";
-			window.speechSynthesis.speak(speaker);
+		if(wd=="sth"){
+			wdName.innerHTML = "The reading speed has been set to 1.0x"
+			wdExplain.innerHTML="朗读速度设置为 1.0x (●'◡'●)";
+			speaker.rate="1";
+			speak();
+		}
+		else if(wd=="lyn"){
+			wdName.innerHTML = "The reading speed has been set to 1.2x"
+			wdExplain.innerHTML="朗读速度加速为 1.2x ( ´･･)ﾉ(._.`)";
+			speaker.rate="1.2";
+			speak()
+		}
+		else if(!isNaN(wd)){
+			var a = parseFloat(wd).toFixed(1);
+			wdName.innerHTML = "The reading speed has been set to "+a+"x";
+			wdExplain.innerHTML="朗读速度设置为 "+a+"x ( ´･･)ﾉ(._.`)";
+			speaker.rate=a;
+			speak();
 		}
 		else if(wd=="正则表达式"){
 			rex();
@@ -181,8 +195,7 @@ function wdJump(twd){// 联想记忆法，实用又高效(..•˘_˘•..)
 	wdExplain.innerHTML = '<span id="wdFreq" class="wdFreq"></span>' + dic[wd];
 	wdFreq.innerHTML = calcLog(freqdic[wd]);
 	if(speakFlag){
-		speaker.text=wd;
-		window.speechSynthesis.speak(speaker);
+		speak();
 	}
 	scrollTo(0,0);
 	research();
@@ -192,7 +205,7 @@ function calcLog(n){
 	return (Math.log(n)/Math.log(86015)*9).toFixed(0);
 }
 function speak(){// 你想听单词，那我就■■■■■■(*•̀ㅂ•́)و
-	speaker.text = wdName.innerHTML;
+	speaker.text = wdName.innerHTML+'.';
 	window.speechSynthesis.speak(speaker);
 }
 function onKeyPress(e) {//开车啦...不是...回车啦((٩(//̀Д/́/)۶))
@@ -226,7 +239,12 @@ function switchV(){
 	volume_off.style.display = tem;
 	speakFlag = (volume_on.style.display == 'block');
 	localStorage['speakFlag'] = speakFlag;
+	if(speakFlag){
+		speak();
+	}
 }
+
+var movedFlag = false;
 // rand在移动端自由移动位置
 rand.addEventListener('touchstart', function(e){
 	var disX = e.touches[0].clientX - rand.offsetLeft;
@@ -243,6 +261,10 @@ rand.addEventListener('touchstart', function(e){
 		document.removeEventListener('touchend', arguments.callee)
 		if(left == rand.style.left && top == rand.style.top){
 			randWd();
+			movedFlag = false;
+		}
+		else{
+			movedFlag = true;
 		}
 	})
 	e.preventDefault();
@@ -262,13 +284,36 @@ rand.onmousedown = function(e){
 		document.onmousemove = null;
 		document.onmouseup = null;
 		if(left == rand.style.left && top == rand.style.top){
-			randWd();
+			// randWd();
+			movedFlag = false;
+		}
+		else{
+			movedFlag = true;
 		}
 	}
 	return false;
 }
+function checkMoved(){
+	if(!movedFlag){
+		randWd();
+	}else{
+		movedFlag = false;
+	}
+}
+
 speakFlag = (localStorage['speakFlag'] == 'true');
 volume_on.style.display = speakFlag? 'block':'none';
 volume_off.style.display= speakFlag? 'none':'block';
 document.querySelector("#searchDiv > input[type=text]").focus();
+
+// service worker
+navigator.serviceWorker.register('./serviceWorker.js', {scope: './'})
+	.then(function (registration) {
+		console.log('Service Worker 注册成功 with scope: ', registration.scope);
+	})
+	.catch(function (err) {
+		alert('Service Worker 注册失败: ', err);
+		console.log('Service Worker registration failed: ', err);
+	});
+
 console.log("\n\n\n\n\n        萌是深藏不漏的✿◡‿◡\n\n\n\n\n\n");

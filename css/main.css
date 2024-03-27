@@ -9,6 +9,7 @@
 	--text_color3: #bbb;
 }
 html{
+	overflow-x: hidden;
 	overflow-y: scroll;
 }
 body {
@@ -16,12 +17,18 @@ body {
 	margin: 0;
 }
 input {
-	border: none;
+	border: dashed 1px transparent;
+	/* border-color: transparent; */
+	font-size: 16px;
 	padding: 15px;
 	width: 100%;
 	box-sizing: border-box;
 	box-shadow: var(--card_shadow);
 	border-radius: var(--card_radius);
+}
+input:focus {
+	/* outline: none; */
+	/* border-color: var(--text_color2); */
 }
 button.jump {
 	display: block;
@@ -51,13 +58,10 @@ button.jump {
 	}
 }
 button.jump:hover {
-	color: var(--text_color2);
+	color: var(--text_color3);
 }
 a:hover {
 	color: #ddd;
-}
-:focus {
-	outline: none;
 }
 .container {
 	max-width: 600px;
@@ -67,7 +71,7 @@ a:hover {
 	padding: 8px;
 }
 #result {
-	margin-top: 54px;
+	margin-top: 57px;
 	margin-bottom: 30px;
 }
 #searchDiv{
@@ -100,6 +104,7 @@ a:hover {
     font-size: 200%;
 	font-family: "等线";
 	font-weight: bold;
+	text-align: left;
 	padding: 0;
 }
 .cardcontent {
