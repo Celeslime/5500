@@ -101,6 +101,7 @@ function research(){
 				prefixWordButton.onclick = function(){wdJump(this.title);}
 				prefixWordButton.innerHTML = key + "<span class='jpExplain'>"+getFreqSpan(freqdic[wd]).outerHTML+dic[key]+"</span>";
 				prefix_list.appendChild(prefixWordButton);
+				n++
 			}
 		}
 	}
@@ -135,15 +136,15 @@ function research(){
 				suffixWordButton.onclick = function(){wdJump(this.title);}
 				suffixWordButton.innerHTML = key + "<span class='jpExplain'>"+getFreqSpan(freqdic[wd]).outerHTML+dic[key]+"</span>";
 				suffix_list.appendChild(suffixWordButton);
+				n++;
 			}
 		}
 	}
 	if(n==0){
-		var noneButton = document.createElement('button');
-		noneButton.className = "jump jpTitle jpEpt";
-		noneButton.id = "D"+(n++);
-		noneButton.innerHTML = "什么都没有了::>_<::";
-		list.push(noneButton.outerHTML);
+		var noneDiv = document.createElement('div');
+		noneDiv.className = "jump jpTitle jpEpt";
+		noneDiv.innerHTML = "什么都没有了::>_<::";
+		result_lists.appendChild(noneDiv);
 	}
 	n = 0;
 	// clearInterval(timer);

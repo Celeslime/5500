@@ -11,11 +11,19 @@
 html{
 	overflow-x: hidden;
 	overflow-y: scroll;
+	background-color: var(--background_color);
+}
+body{
+	background-color: transparent;
 }
 html, body {
     scroll-behavior: smooth;
-	background-color: var(--background_color);
 	margin: 0;
+}
+#searchDiv{
+	position: sticky;
+	top: 0;
+	z-index: 90;
 }
 input {
 	border: dashed 1px transparent;
@@ -39,7 +47,6 @@ input:focus {
 	text-align: left;
 	padding: 8px 16px;
 	font-size: 110%;
-
 	width: 100%;
 	color: var(--text_color1);
 	border-bottom: solid 1px var(--text_color3);
@@ -47,20 +54,22 @@ input:focus {
 	animation: exp .2s;
 	transition: .2s;
 }
-@keyframes exp {
-	0% {
-		width: 96%;
-		color: var(--background_color);
-		border-bottom-color: var(--background_color);
-	}
-	100% {
-		width: 100%;
-		color: var(--text_color1);
-		border-bottom-color: var(--text_color3);
-	}
+button.jump {
+    cursor: pointer;
+}
+div.jump{
+	cursor: default;
 }
 button.jump:hover {
 	color: var(--text_color3);
+}
+@keyframes exp {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 100%;
+	}
 }
 a:hover {
 	color: #ddd;
@@ -73,15 +82,8 @@ a:hover {
 	padding: 8px;
 }
 #result {
-	margin-top: 58px;
+	margin-top: -8px;
 	margin-bottom: 30px;
-}
-#searchDiv{
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 90;
 }
 .card {
 	background: var(--card_background);
@@ -109,6 +111,7 @@ a:hover {
 	font-weight: bold;
 	text-align: left;
 	padding: 0;
+	cursor: pointer;
 }
 .cardcontent {
 	line-height: 20px;
@@ -131,18 +134,16 @@ a:hover {
 	font-size: 90%;
 	font-family: '等线';
 	filter: opacity(0.9);
+	cursor: pointer;
 }
 span.wdFreq{
-	/* display: none; */
+	display: none;
 	/* float: right; */
 }
 #resultUl {
 	padding-top: 8px;
 }
-#mail {
-	color: #fff;
-	text-decoration: none;
-}
+
 span.jpExplain, div#wdExplain {
 	float: right;
 }
@@ -199,6 +200,7 @@ span.jpExplain, div#wdExplain {
 	display: inline-flex;
 	align-items: center;
 	margin-left: 16px;
+	cursor: default;
 }
 .footicon{
 	height: 16px;
