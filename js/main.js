@@ -3,7 +3,7 @@ var timer,wd="",guess="~";
 var speakFlag;
 const speaker=new window.SpeechSynthesisUtterance();
 var rand = document.getElementById('rand');
-var includes_list = document.getElementById('includes_list');
+var inclusive_list = document.getElementById('inclusive_list');
 var prefix_list = document.getElementById('prefix_list');
 var suffix_list = document.getElementById('suffix_list');
 speaker.rate="0.8";
@@ -53,14 +53,14 @@ function search(){
 		research();
 	}
 }
-var list=[],n=1;
+var n = 0;
 var timer,intCircle;
 function research(){
 	// result_lists.innerHTML = "";
 	inclusive_list.innerHTML = "";
 	prefix_list.innerHTML = "";
 	suffix_list.innerHTML = "";
-	list=[];n=0;
+	n = 0;
 	for(var key in dic){//包含关系搜索
 		if(key.search(wd)!=-1 && wd!=key){
 			var conslusiveWordButton = document.createElement("button");
@@ -69,11 +69,10 @@ function research(){
 			conslusiveWordButton.innerHTML = key + '<span class="jpExplain">'+
 				getFreqSpan(freqdic[wd]).outerHTML+dic[key] +'</span>';
 			conslusiveWordButton.onclick = function(){wdJump(this.title);}
-				
 			inclusive_list.appendChild(conslusiveWordButton);
+			n++;
 		}
 	}
-
 	var beginning = "^", alphaN = 0, n0 = n;
 	if(wd.length >= 4 && wd[0] != "^"){//前缀搜索
 		for(var i=0;i<4;i++){
@@ -92,12 +91,12 @@ function research(){
 					var prefixTitleDiv = document.createElement("div");
 					prefixTitleDiv.className = "jump jpTitle cardcontent";
 					prefixTitleDiv.innerHTML = "Ⅱ.前缀" + "<span>" + beginning + "</span>";
-					// list.push(prefixTitleDiv.outerHTML);
 					prefix_list.appendChild(prefixTitleDiv);
 					n++;
 				}
 				prefixWordButton.className = "jump";
 				prefixWordButton.title = key;
+				prefixWordButton.type = "button";
 				prefixWordButton.onclick = function(){wdJump(this.title);}
 				prefixWordButton.innerHTML = key + "<span class='jpExplain'>"+getFreqSpan(freqdic[wd]).outerHTML+dic[key]+"</span>";
 				prefix_list.appendChild(prefixWordButton);
@@ -140,11 +139,11 @@ function research(){
 			}
 		}
 	}
-	if(n==0){
+	if(n == 0){
 		var noneDiv = document.createElement('div');
 		noneDiv.className = "jump jpTitle jpEpt";
 		noneDiv.innerHTML = "什么都没有了::>_<::";
-		result_lists.appendChild(noneDiv);
+		inclusive_list.appendChild(noneDiv);
 	}
 	n = 0;
 	// clearInterval(timer);
