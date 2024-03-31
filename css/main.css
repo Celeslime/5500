@@ -94,6 +94,9 @@ a:hover {
 	padding: 8px;
 	transition: .3s;
 }
+a{
+	color: #fff;
+}
 .cardtitle {
 	display: flex;
 	justify-content:space-between;

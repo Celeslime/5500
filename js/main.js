@@ -1,54 +1,55 @@
 // 奇妙的事情发生了 o‿≖✧
 var timer,wd="",guess="~";
-var speakFlag;
-const speaker=new window.SpeechSynthesisUtterance();
+var speakFlag, speakRate="0.8", speakLang="en";
 var rand = document.getElementById('rand');
 var inclusive_list = document.getElementById('inclusive_list');
 var prefix_list = document.getElementById('prefix_list');
 var suffix_list = document.getElementById('suffix_list');
-speaker.rate="0.8";
-speaker.lang="en";
 
+// 用户0.4s内没有输入，立即搜索
+var wdInput = document.getElementById('wdInput');
+wdInput.addEventListener('input', function() {
+    clearTimeout(timer);
+	   timer = setTimeout(search, 400);
+});
+// 回车搜索
+wdInput.addEventListener('keydown', function(event) {
+    if (event.key == "Enter") {
+        search();
+    }
+});
 function search(){
-	var elem=document.querySelector('#searchDiv input[name="word"]');
-	wd=elem.value;
-	// elem.value="";//想了想还是不要这样了
+	wd = wdInput.value;
 	translation.style.display = 'block';
 	rexcard.style.display = 'none'
 	footer.style.display = 'none'
-	if(wd==""){
-		location.reload();//摁下回车刷新吧≖‿≖✧
+	if(wd == ""){
+		// ≖‿≖✧
+		// translation.style.display = 'none';
 		scrollTo(0,0);
 	}
 	else if(dic[wd]){
 		wdJump(wd);
 	}
 	else{
-		wdName.innerHTML=wd;
+		// wdName.innerHTML=wd;
 		if(wd=="sth"){
 			wdName.innerHTML = "The reading speed has been set to 1.0x"
 			wdExplain.innerHTML="朗读速度设置为 1.0x (●'◡'●)";
-			speaker.rate="1";
+			speakRate = "1";
 			speak();
 		}
 		else if(wd=="lyn"){
 			wdName.innerHTML = "The reading speed has been set to 1.2x"
-			wdExplain.innerHTML="朗读速度加速为 1.2x ( ´･･)ﾉ(._.`)";
-			speaker.rate="1.2";
+			wdExplain.innerHTML="朗读速度加速为 1.2x ( ´･･)";
+			speakRate = "1.2";
 			speak()
-		}
-		else if(!isNaN(wd)){
-			var a = parseFloat(wd).toFixed(1);
-			wdName.innerHTML = "The reading speed has been set to "+a+"x";
-			wdExplain.innerHTML="朗读速度设置为 "+a+"x ( ´･･)ﾉ(._.`)";
-			speaker.rate=a;
-			speak();
 		}
 		else if(wd=="正则表达式"){
 			rex();
 		}
 		else{
-			translation.style.display="none";
+			translation.style.display = "none";
 		} 
 		research();
 	}
@@ -56,7 +57,6 @@ function search(){
 var n = 0;
 var timer,intCircle;
 function research(){
-	// result_lists.innerHTML = "";
 	inclusive_list.innerHTML = "";
 	prefix_list.innerHTML = "";
 	suffix_list.innerHTML = "";
@@ -146,9 +146,6 @@ function research(){
 		inclusive_list.appendChild(noneDiv);
 	}
 	n = 0;
-	// clearInterval(timer);
-	// intCircle=150;
-	// timer=setInterval(frame,intCircle);
 }
 function wdJump(twd){// 联想记忆法，实用又高效(..•˘_˘•..)
 	scrollTo(0,0);
@@ -158,8 +155,9 @@ function wdJump(twd){// 联想记忆法，实用又高效(..•˘_˘•..)
 	footer.style.display = 'none'
 	wdName.innerHTML = wd;
 	wdExplain.innerHTML = getFreqSpan(freqdic[wd]).outerHTML + dic[wd];
-	if(speakFlag)
+	if(speakFlag){
 		speak();
+	}
 	research();
 }
 function getFreqSpan(n){
@@ -170,23 +168,11 @@ function getFreqSpan(n){
 	return freqSpan;
 }
 function speak(){// 你想听单词，那我就■■■■■■(*•̀ㅂ•́)و
-	if(window.speechSynthesis.speaking || window.speechSynthesis.pending){
-		return false;
-	}
-	speaker.text = wdName.innerHTML;
+	var speaker = new SpeechSynthesisUtterance();
+	speaker.text = wdName.innerHTML
+	speaker.rate = speakRate;
+	speaker.lang = speakLang;
 	window.speechSynthesis.speak(speaker);
-}
-function onKeyPress(e) {//开车啦...不是...回车啦((٩(//̀Д/́/)۶))
-	var keyCode=null;
-	if(e.which)
-		keyCode=e.which;
-	else if(e.keyCode)
-		keyCode=e.keyCode;
-	if(keyCode == 13) {
-		search();
-		return false;
-	}
-	return true;
 }
 function rex() {//要不要了解一下正则表达式呐ฅ(๑*д*๑)ฅ
 	translation.style.display = 'none';

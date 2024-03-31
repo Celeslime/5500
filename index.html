@@ -33,12 +33,12 @@
 <body>
 	<h1 class="hide">5500 考研单词查询</h1>
 	<nav id="searchDiv" class="container">
-		<input type="text" name="word" placeholder="输入单词查询" onkeypress="return onKeyPress(event)"> 	
+		<input type="text" name="word" placeholder="输入单词查询" id="wdInput"> 	
 	</nav>
 	<div id="result" class="container">
 		<div class="card" id="translation">
 			<div class="cardtitle">
-				<button id="wdName" type="button" onclick="speak();">PRESEARCHING!</button>
+				<button id="wdName" type="button" onclick="speak();">PREQUERYING!</button>
 				<button id="volume" type="button" title="speaker" onclick="switchV();">
 					<svg id="volume_off" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
 						<path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zm7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"/>
@@ -51,21 +51,15 @@
 			<div class="cardcontent">
 				<div id="wdExplain">
 					<ul>
-						<li>query and association.</li>
 						<li>5500 graduate exam vocabulary.</li>
-						<li>speaker.</li>
-						<li>random word.</li>
-
-						<li>press Enter to query.</li>
+						<li>query, association, random and speak.</li>
+						<li>install to use offline mode.</li>
 						<li>regular expressions: <a class="rex" title="more" onclick="rex();"><span>more</span></a></li>
 					</ul>
 					<ul>
-						<li>查询和联想</li>
 						<li>考研5500词汇</li>
-						<li>单词朗读</li>
-						<li>随机单词</li>
-
-						<li>按下回车查询</li>
+						<li>查询、联想、随机单词、朗读</li>
+						<li>安装以使用脱机模式</li>
 						<li>正则表达式<a class="rex" title="更多" onclick="rex();"><span>详细使用方法</span></a></li>
 					</ul>
 				</div>
