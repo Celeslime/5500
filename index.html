@@ -22,28 +22,28 @@
 	三更：2024/3/24
 -->
 <head>
-	<title>5500 考研单词查询</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width" initial-scale="1"/>
 	<meta name='description' content='考研5500个词汇的查询和联想 在输入框中输入单词并回车来查询 支持正则表达式方法详细使用方法 部分浏览器可以朗读单词'>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="icon" href="icon.png" sizes="32x32">
-	<link rel="manifest" href="/manifest.json" />
+	<link rel="manifest" href="manifest.webmanifest" />
+	<title>5500 考研单词查询</title>
 </head>
 <body>
-	<h1 style="display: none;">5500 考研单词查询</h1>
+	<h1 class="hide">5500 考研单词查询</h1>
 	<nav id="searchDiv" class="container">
 		<input type="text" name="word" placeholder="输入单词查询" onkeypress="return onKeyPress(event)"> 	
 	</nav>
 	<div id="result" class="container">
 		<div class="card" id="translation">
 			<div class="cardtitle">
-				<button id="wdName" onclick="speak();">PRESEARCHING!</button>
-				<button id="volume" onclick="switchV();">
-					<svg id="volume_off" style="display: block;" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+				<button id="wdName" type="button" onclick="speak();">PRESEARCHING!</button>
+				<button id="volume" type="button" title="speaker" onclick="switchV();">
+					<svg id="volume_off" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
 						<path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zm7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"/>
 					</svg>
-					<svg id="volume_on" style="display: none;" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+					<svg id="volume_on" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
 						<path d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A.5.5 0 0 0 3 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 9 12V4zm3.025 4a4.486 4.486 0 0 1-1.318 3.182L10 10.475A3.489 3.489 0 0 0 11.025 8 3.49 3.49 0 0 0 10 5.525l.707-.707A4.486 4.486 0 0 1 12.025 8z"/>
 					</svg>
 				</button>
@@ -54,23 +54,25 @@
 						<li>query and association.</li>
 						<li>5500 graduate exam vocabulary.</li>
 						<li>speaker.</li>
+						<li>random word.</li>
 
 						<li>press Enter to query.</li>
-						<li>regular expressions: <a id="rex" onclick="rex();"><span>more</span></a></li>
+						<li>regular expressions: <a class="rex" onclick="rex();"><span>more</span></a></li>
 					</ul>
 					<ul>
 						<li>查询和联想</li>
 						<li>考研5500词汇</li>
 						<li>单词朗读</li>
+						<li>随机单词</li>
 
 						<li>按下回车查询</li>
-						<li>正则表达式<a id="rex" onclick="rex();"><span>详细使用方法</span></a></li>
+						<li>正则表达式<a class="rex" onclick="rex();"><span>详细使用方法</span></a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="card" id="rexcard" style="display: none;">
-			<div class="cardtitle"><button>正则表达式</button></div>
+		<div class="card" id="rexcard">
+			<div class="cardtitle"><button type="button">正则表达式</button></div>
 			<div class="cardcontent">
 				<p>
 					正则表达式是对字符串操作的一种逻辑公式；<br>
@@ -90,7 +92,11 @@
 				</p>
 			</div>
 		</div>
-		<div id="resultUl" class="container"></div>
+		<div id="result_lists" class="container">
+			<div id="inclusive_list"></div>
+			<div id="prefix_list"></div>
+			<div id="suffix_list"></div>
+		</div>
 		<div class="footer" id="footer">
 			<span class="footname">Sth @ 2020.04.21</span>
 			<a href="https://www.github.com/CeleSlime/5500">
@@ -109,7 +115,7 @@
 		</div>
 	</div>
 	<div id="rand">
-		<button onclick="checkMoved()">
+		<button title="random word" type="button" onclick="checkMoved()">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
 				<path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
 				<path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>

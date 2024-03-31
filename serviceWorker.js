@@ -5,10 +5,10 @@ const contentToCache = [
     './index.html',
     './css/main.css',
     './icon.png',
+    './manifest.webmanifest',
     './js/main.js',
     './js/dic.js',
     './js/5500.js',
-    './manifest.json',
     './serviceWorker.js',
 ];
 /* 监听安装事件，install 事件一般是被用来设置你的浏览器的离线缓存逻辑 */
