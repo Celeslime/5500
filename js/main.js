@@ -1,6 +1,6 @@
 // 奇妙的事情发生了 o‿≖✧
 var timer,wd="",guess="~";
-var speakFlag, speakRate="0.8", speakLang="en";
+var speakFlag, speakRate="1.0", speakLang="en";
 var rand = document.getElementById('rand');
 var inclusive_list = document.getElementById('inclusive_list');
 var prefix_list = document.getElementById('prefix_list');
@@ -15,28 +15,27 @@ wdInput.addEventListener('input', function() {
 // 回车搜索
 wdInput.addEventListener('keydown', function(event) {
     if (event.key == "Enter") {
-        search();
+        search(0);
     }
 });
-function search(){
+function search(minLen = 1){
 	wd = wdInput.value;
+	if(wd.length <= minLen){
+		// ≖‿≖✧
+		return;
+	}
 	translation.style.display = 'block';
 	rexcard.style.display = 'none'
 	footer.style.display = 'none'
-	if(wd == ""){
-		// ≖‿≖✧
-		// translation.style.display = 'none';
-		scrollTo(0,0);
-	}
-	else if(dic[wd]){
+	if(dic[wd]){
 		wdJump(wd);
 	}
 	else{
 		// wdName.innerHTML=wd;
 		if(wd=="sth"){
-			wdName.innerHTML = "The reading speed has been set to 1.0x"
-			wdExplain.innerHTML="朗读速度设置为 1.0x (●'◡'●)";
-			speakRate = "1";
+			wdName.innerHTML = "The reading speed has been set to 0.8x"
+			wdExplain.innerHTML="朗读速度设置为 0.8x (●'◡'●)";
+			speakRate = "0.8";
 			speak();
 		}
 		else if(wd=="lyn"){

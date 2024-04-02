@@ -13,7 +13,7 @@ const contentToCache = [
 ];
 /* 监听安装事件，install 事件一般是被用来设置你的浏览器的离线缓存逻辑 */
 self.addEventListener("install", (e) => {
-	console.log("Service Worker installed");
+	// console.log("Service Worker installed");
     /* 通过这个方法可以防止缓存未完成，就关闭serviceWorker */
 	e.waitUntil(
 		(async () => {
@@ -25,9 +25,9 @@ self.addEventListener("install", (e) => {
 /* 注册fetch事件，拦截全站的请求 */
 self.addEventListener("fetch", function (event) {
 	event.respondWith(fetch(event.request).then((res) => {
+        /* 在缓存中匹配对应请求资源额外返回 */
 		let response = res.clone();
         caches.open(cacheName).then((cache) => {
-          /* 在缓存中匹配对应请求资源直接返回 */
           cache.put(event.request, response);
         });
 		return res
