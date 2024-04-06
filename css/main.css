@@ -170,15 +170,16 @@ span.jpExplain, div#wdExplain {
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
-	height: 40px;
-	width: 40px;
-	border-radius: 100%;
 	z-index: 99;
+}
+#rand, #rand button{
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	transform: scale(1.1);
 }
 #rand button{
 	border: none;
-	width: 40px;
-	height: 40px;
 	border-radius: 100%;
 	box-shadow: var(--card_shadow);
 	background: var(--card_background);
