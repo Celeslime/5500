@@ -11,14 +11,11 @@
 html{
 	overflow-x: hidden;
 	overflow-y: scroll;
+	scroll-behavior: smooth;
 	background-color: var(--background_color);
 }
 body{
 	background-color: transparent;
-}
-html, body {
-    scroll-behavior: smooth;
-	margin: 0;
 }
 #searchDiv{
 	position: sticky;
@@ -82,8 +79,15 @@ a:hover {
 	padding: 8px;
 }
 #result {
-	margin-top: -8px;
+	margin-top: 8px;
 	margin-bottom: 30px;
+}
+#result_lists{
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+#result_lists > *{
+	margin-bottom: 16px;
 }
 .card {
 	background: var(--card_background);
@@ -197,8 +201,9 @@ span.jpExplain, div#wdExplain {
 .footer{
 	margin-bottom: 30px;
 	color: var(--text_color3);
+	/* display: ruby-text; */
 }
-.footer > *{
+.footer > a{
 	color: var(--text_color3)!important;
 	text-decoration: none;
 	display: inline-flex;
@@ -208,7 +213,7 @@ span.jpExplain, div#wdExplain {
 }
 .footicon{
 	height: 16px;
-	padding-right: 5px;
+	margin-right: 5px;
 }
 .hide{
 	display: none;
@@ -221,4 +226,7 @@ span.jpExplain, div#wdExplain {
 }
 #rexcard{
 	display: none;
+}
+.rex{
+	display: inline-block;
 }
