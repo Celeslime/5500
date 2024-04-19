@@ -7,6 +7,7 @@
 	--text_color1: #555;
 	--text_color2: #888;
 	--text_color3: #bbb;
+	--hover_color: #fffc;
 }
 html{
 	overflow-x: hidden;
@@ -19,7 +20,7 @@ body{
 }
 #searchDiv{
 	position: sticky;
-	top: 0;
+	top: 8px;
 	z-index: 90;
 }
 input {
@@ -49,13 +50,10 @@ input:focus {
 	border-bottom: solid 1px var(--text_color3);
 	will-change: width;
 	animation: exp .2s;
-	transition: .2s;
 }
 button.jump {
     cursor: pointer;
-}
-div.jump{
-	cursor: default;
+	transition: .2s;
 }
 button.jump:hover {
 	color: var(--text_color3);
@@ -68,9 +66,6 @@ button.jump:hover {
 		opacity: 100%;
 	}
 }
-a:hover {
-	color: #ddd;
-}
 .container {
 	max-width: 600px;
 	margin: 0 auto;
@@ -80,14 +75,10 @@ a:hover {
 }
 #result {
 	margin-top: 8px;
-	margin-bottom: 30px;
+	margin-bottom: 80px;
 }
 #result_lists{
 	margin-top: 8px;
-	margin-bottom: 8px;
-}
-#result_lists > *{
-	margin-bottom: 16px;
 }
 .card {
 	background: var(--card_background);
@@ -98,8 +89,12 @@ a:hover {
 	padding: 8px;
 	transition: .3s;
 }
-a{
+a {
 	color: #fff;
+	transition: .3s;
+}
+a:hover {
+	color: var(--hover_color);
 }
 .cardtitle {
 	display: flex;
@@ -108,7 +103,7 @@ a{
 	padding: 10px;
 	overflow: hidden;
 }
-.cardtitle > * {
+.cardtitle > button {
 	color: #fff;
 	border: none;
 	background: none;
@@ -119,6 +114,10 @@ a{
 	text-align: left;
 	padding: 0;
 	cursor: pointer;
+	transition: .1s;
+}
+.cardtitle > button:hover{
+	color: var(--hover_color);
 }
 .cardcontent {
 	line-height: 20px;
@@ -155,8 +154,9 @@ span.jpExplain, div#wdExplain {
 	float: right;
 }
 .jump.jpTitle {
-	margin-top: 30px;
+	margin-top: 24px;
 	display: block;
+	cursor: default;
 }
 .jump.jpTitle:hover {
 	color: #666;
@@ -189,19 +189,17 @@ span.jpExplain, div#wdExplain {
 	background: var(--card_background);
 	color: white;
 	display: flex;
+	transition: 0.1s;
 }
 #rand button:hover{
 	filter: brightness(0.92);
 	cursor: pointer;
-	transition: 0.2s;
 }
 #rand svg{
 	margin: auto;
 }
 .footer{
-	margin-bottom: 30px;
 	color: var(--text_color3);
-	/* display: ruby-text; */
 }
 .footer > a{
 	color: var(--text_color3)!important;
