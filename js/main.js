@@ -53,89 +53,55 @@ function search(minLen = 1){
 		research();
 	}
 }
-var n = 0;
-var timer,intCircle;
+var timer, intCircle;
 function research(){
 	inclusive_list.innerHTML = "";
 	prefix_list.innerHTML = "";
 	suffix_list.innerHTML = "";
-	n = 0;
-	for(var key in dic){//包含关系搜索
-		if(key.search(wd)!=-1 && wd!=key){
-			var conslusiveWordButton = document.createElement("button");
-			conslusiveWordButton.className = "jump";
-			conslusiveWordButton.title = key;
-			conslusiveWordButton.innerHTML = key + '<span class="jpExplain">'+
-				getFreqSpan(freqdic[wd]).outerHTML+dic[key] +'</span>';
-			conslusiveWordButton.onclick = function(){wdJump(this.title);}
-			inclusive_list.appendChild(conslusiveWordButton);
+	var n = 0;
+	for(var key in dic){// 包含
+		if(key.search(wd) != -1 && wd != key){
+			addWdButton(key, inclusive_list);
 			n++;
 		}
 	}
-	var beginning = "^", alphaN = 0, n0 = n;
-	if(wd.length >= 4 && wd[0] != "^"){//前缀搜索
-		for(var i=0;i<4;i++){
-			if("aeiou".includes(wd[i])){
-				alphaN++;
-			}
-			beginning+=wd[i];
-			if(alphaN==2){
-				break;
-			}
+	if(wd.length >= 4 && wd[0] != "^"){// 前缀^word
+		var method = function(a,b){
+			return similarity((a),(b));
 		}
-		for(var key in dic){
-			if(key.search(beginning) != -1 && wd != key){
-				var prefixWordButton = document.createElement("button");
-				if(n == n0){
-					var prefixTitleDiv = document.createElement("div");
-					prefixTitleDiv.className = "jump jpTitle cardcontent";
-					prefixTitleDiv.innerHTML = "Ⅱ.前缀" + "<span>" + beginning + "</span>";
-					prefix_list.appendChild(prefixTitleDiv);
-					n++;
-				}
-				prefixWordButton.className = "jump";
-				prefixWordButton.title = key;
-				prefixWordButton.type = "button";
-				prefixWordButton.onclick = function(){wdJump(this.title);}
-				prefixWordButton.innerHTML = key + "<span class='jpExplain'>"+getFreqSpan(freqdic[wd]).outerHTML+dic[key]+"</span>";
-				prefix_list.appendChild(prefixWordButton);
-				n++
-			}
-		}
-	}
-
-	var endding="$",n1=n;alphaN=0;
-	if(wd.length>=4 && wd[wd.length-1]!="$"){//后缀搜索
-		for(var i = (wd.length-1); i >= (wd.length-4); i--){
-			if("aeiou".includes(wd[i])){
-				alphaN++;
-			}
-			endding = wd[i] + endding;
-			if(alphaN == 2){
-				if(wd[i-1])endding = wd[i-1]+endding;
-				if(endding == 'tion$' || endding == 'tive$' || endding == 'sion$'){
-					if(wd[i-2])endding = wd[i-2]+endding;
-				}
-				break;
-			}
-		}
-		for(var key in dic){
-			if(key.search(endding)!=-1 && wd!=key){
-				if(n==n1){
-					var suffixTiTleButton = document.createElement("div");
-					suffixTiTleButton.className = "jump jpTitle cardcontent";
-					suffixTiTleButton.innerHTML = "Ⅳ.后缀<span>"+endding+"</span>";
-					suffix_list.appendChild(suffixTiTleButton);
-					n++;
-				}
-				var suffixWordButton = document.createElement("button");
-				suffixWordButton.className = "jump";
-				suffixWordButton.title = key;
-				suffixWordButton.onclick = function(){wdJump(this.title);}
-				suffixWordButton.innerHTML = key + "<span class='jpExplain'>"+getFreqSpan(freqdic[wd]).outerHTML+dic[key]+"</span>";
-				suffix_list.appendChild(suffixWordButton);
+		var simiList = simiSearch(wd, method);
+		for(var i in simiList){
+			key = simiList[i];
+			if(i == 0){
+				var beginning = '^' + key.substring(0,method(simiList[simiList.length-1],wd));
+				var prefixTitleDiv = document.createElement("div");
+				prefixTitleDiv.className = "jump jpTitle cardcontent";
+				prefixTitleDiv.innerHTML = "Ⅱ.前缀" + "<span>" + beginning + "</span>";
+				prefix_list.appendChild(prefixTitleDiv);
 				n++;
 			}
+			addWdButton(key, prefix_list);
+			n++
+		}
+	}
+	if(wd.length >= 4 && wd[wd.length-1]!="$"){// 后缀word$
+		var method = function(a,b){
+			return similarity(reverse(a),reverse(b));
+		}
+		var simiList = simiSearch(wd, method);
+		for(var i in simiList){
+			key = simiList[i];
+			if(i == 0){
+				var lastWd = simiList[simiList.length-1]
+				var endding = '$' + reverse(key).substring(0,method(lastWd,wd));
+				var suffixTiTleButton = document.createElement("div");
+				suffixTiTleButton.className = "jump jpTitle cardcontent";
+				suffixTiTleButton.innerHTML = "Ⅲ.后缀<span>"+reverse(endding)+"</span>";
+				suffix_list.appendChild(suffixTiTleButton);
+				n++;
+			}
+			addWdButton(key, suffix_list);
+			n++
 		}
 	}
 	if(n == 0){
@@ -144,7 +110,46 @@ function research(){
 		noneDiv.innerHTML = "什么都没有了::>_<::";
 		inclusive_list.appendChild(noneDiv);
 	}
-	n = 0;
+}
+function similarity(a, b){
+	var i;
+	for(i = 0;i < a.length;i++){
+		if(a[i] != b[i]){
+			break;
+		}
+	}
+	return i;
+}
+function simiSearch(wd, method = similarity){
+	var matrix = [], list = [];
+	for(var i = 0;i < 20;i++){// 希望没有20个字母以上的单词(。_。)
+		matrix[i] = [];
+	}
+	for(var key in dic){
+		var similarity = method(key, wd);
+		if(similarity > 0 && key != wd){
+			matrix[similarity].push(key);
+		}
+	}
+	for(var i = matrix.length - 1;i >= 0;i--){
+	    list = list.concat(matrix[i]);
+		if(list.length + matrix[i-1].length > 10){
+			break;
+		}
+	}
+	return list;
+}
+function addWdButton(wd, list){
+	var WdButton = document.createElement("button");
+	WdButton.className = "jump";
+	WdButton.title = wd;
+	WdButton.type = "button";
+	WdButton.onclick = function(){wdJump(this.title);}
+	WdButton.innerHTML = wd + "<span class='jpExplain'>"+dic[wd]+"</span>";
+	list.appendChild(WdButton);
+}
+function reverse(word){
+	return word.split("").reverse().join("");
 }
 function wdJump(twd){// 联想记忆法，实用又高效(..•˘_˘•..)
 	scrollTo(0,0);
