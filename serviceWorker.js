@@ -9,7 +9,6 @@ const contentToCache = [
     './js/main.js',
     './js/dic.js',
     './js/5500.js',
-    './serviceWorker.js',
 ];
 /* 监听安装事件，install 事件一般是被用来设置你的浏览器的离线缓存逻辑 */
 self.addEventListener("install", (e) => {
@@ -25,15 +24,16 @@ self.addEventListener("install", (e) => {
 self.addEventListener("fetch", function (event) {
 	event.respondWith(
         fetch(event.request)
-        .then((res) => {
-            let response = res.clone();
-            caches.open(cacheName).then((cache) => {
-                cache.put(event.request, response);
-            });
-            return res
-	    })
-        .catch((err) => {
-		    return caches.match(event.request)
-        }
+            .then((res) => {
+                let response = res.clone();
+                caches.open(cacheName)
+                    .then((cache) => {
+                        cache.put(event.request, response);
+                    });
+                return res
+            })
+            .catch((err) => {
+                return caches.match(event.request)
+            }
     ));
 });
