@@ -10,7 +10,7 @@ var suffix_list = document.getElementById('suffix_list');
 var wdInput = document.getElementById('wdInput');
 wdInput.addEventListener('input', function() {
     clearTimeout(timer);
-	   timer = setTimeout(search, 400);
+	timer = setTimeout(search, 400);
 });
 // 回车搜索
 wdInput.addEventListener('keydown', function(event) {
@@ -32,20 +32,9 @@ function search(minLen = 1){
 	}
 	else{
 		// wdName.innerHTML=wd;
-		if(wd=="sth"){
-			wdName.innerHTML = "The reading speed has been set to 0.8x"
-			wdExplain.innerHTML="朗读速度设置为 0.8x (●'◡'●)";
-			speakRate = "0.8";
-			speak();
-		}
-		else if(wd=="lyn"){
-			wdName.innerHTML = "The reading speed has been set to 1.2x"
-			wdExplain.innerHTML="朗读速度加速为 1.2x ( ´･･)";
-			speakRate = "1.2";
-			speak()
-		}
-		else if(wd=="正则表达式"){
+		if(wd == "正则表达式" || wd == 'rex'){
 			rex();
+			return;
 		}
 		else{
 			translation.style.display = "none";
@@ -76,7 +65,7 @@ function research(){
 				var beginning = '^' + key.substring(0,method(simiList[simiList.length-1],wd));
 				var prefixTitleDiv = document.createElement("div");
 				prefixTitleDiv.className = "jump jpTitle cardcontent";
-				prefixTitleDiv.innerHTML = "Ⅱ.前缀" + "<span>" + beginning + "</span>";
+				prefixTitleDiv.innerHTML = "Ⅱ.前缀<span>" + beginning + "</span>";
 				prefix_list.appendChild(prefixTitleDiv);
 				n++;
 			}
@@ -210,8 +199,8 @@ rand.addEventListener('touchstart', function(e){
 	var left = rand.style.left;
 	var top = rand.style.top;
 	var handler = function(e){
-		rand.style.left = e.touches[0].clientX - disX + 'px';
-		rand.style.top = e.touches[0].clientY - disY + 'px';
+		rand.style.left = (e.touches[0].clientX - disX) / document.documentElement.clientWidth  * 100 + '%';
+		rand.style.top  = (e.touches[0].clientY - disY) / document.documentElement.clientHeight * 100 + '%';
 	}
 	document.addEventListener('touchmove', handler);
 	document.addEventListener('touchend', function(e){
@@ -235,8 +224,8 @@ rand.onmousedown = function(e){
 	var left = rand.style.left;
 	var top = rand.style.top;
 	document.onmousemove = function(e){
-		rand.style.left = e.clientX - disX + 'px';
-		rand.style.top = e.clientY - disY + 'px';
+		rand.style.left = (e.clientX - disX) / document.documentElement.clientWidth  * 100 + '%';
+		rand.style.top  = (e.clientY - disY) / document.documentElement.clientHeight * 100 + '%';
 	}
 	document.onmouseup = function(){
 		document.onmousemove = null;
@@ -273,5 +262,4 @@ navigator.serviceWorker.register('./serviceWorker.js', {scope: './'})
 		alert('Service Worker 注册失败: ', err);
 		console.log('Service Worker registration failed: ', err);
 	});
-
-console.log("\n\n\n\n\n        萌是深藏不漏的✿◡‿◡\n\n\n\n\n\n");
+console.log("\n\n\n\n\n        萌是深藏不漏的✿◡‿◡\n\n\n\n\n\ntry tap 'love' at here");
